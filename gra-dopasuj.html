@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dopasuj i się baw</title>
+<style>
+  :root { --bg:#eef6f3; --card:#fff; --ink:#2f4858; --accent:#7bb6a4; --soft:#cfe5dd; }
+  * { box-sizing:border-box; }
+  body { margin:0; min-height:100vh; background:var(--bg); color:var(--ink);
+         font-family:"Trebuchet MS",Verdana,sans-serif; display:flex; flex-direction:column; align-items:center; }
+  header { width:100%; display:flex; justify-content:space-between; padding:12px 16px; }
+  button { font:inherit; color:inherit; cursor:pointer; border:none; }
+  .small { background:var(--card); border-radius:14px; padding:10px 16px; font-size:1.1rem; box-shadow:0 2px 6px #0001; }
+  main { width:100%; max-width:720px; padding:8px 16px 32px; text-align:center; }
+  h1 { font-size:2rem; margin:8px 0 24px; }
+  .menu { display:grid; gap:16px; }
+  .menu button { background:var(--card); border-radius:24px; padding:24px; font-size:1.6rem;
+                 box-shadow:0 4px 10px #0001; transition:transform .2s; }
+  .menu button:hover, .menu button:focus-visible { transform:scale(1.03); outline:4px solid var(--accent); }
+  .stars { font-size:2rem; letter-spacing:6px; min-height:2.6rem; }
+  .target { font-size:min(32vw,9rem); background:var(--card); border-radius:32px; margin:8px auto 8px;
+            width:min(60vw,15rem); padding:12px; box-shadow:0 4px 10px #0001; }
+  .label { font-size:1.6rem; min-height:2.2rem; margin-bottom:16px; }
+  .choices { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .choice { background:var(--card); border-radius:24px; font-size:min(18vw,5rem); padding:16px 0;
+            box-shadow:0 4px 10px #0001; transition:transform .2s, background .3s; }
+  .choice:hover, .choice:focus-visible { transform:scale(1.05); outline:4px solid var(--accent); }
+  .choice.ok { background:#d6f0d9; transform:scale(1.08); }
+  .choice.try { animation:wobble .5s; background:#fdf1d6; }
+  @keyframes wobble { 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+  .msg { font-size:1.5rem; min-height:2.2rem; margin-top:18px; }
+  .big { font-size:6rem; }
+  .hidden { display:none; }
+  @media (prefers-reduced-motion: reduce){ *{animation:none!important; transition:none!important} }
+</style>
+</head>
+<body>
+<header>
+  <button class="small" id="back" aria-label="Wróć do menu">⬅ Menu</button>
+  <button class="small" id="snd" aria-label="Dźwięk">🔊 Dźwięk</button>
+</header>
+<main>
+  <section id="menu">
+    <h1>Co chcesz dziś robić?</h1>
+    <div class="menu">
+      <button data-mode="animals">🐶 Zwierzęta</button>
+      <button data-mode="colors">🎨 Kolory</button>
+      <button data-mode="feelings">🙂 Emocje</button>
+      <button data-mode="shapes">🔺 Kształty</button>
+    </div>
+  </section>
+
+  <section id="game" class="hidden">
+    <div class="stars" id="stars"></div>
+    <div class="target" id="target"></div>
+    <div class="label" id="label"></div>
+    <div class="choices" id="choices"></div>
+    <div class="msg" id="msg"></div>
+  </section>
+
+  <section id="end" class="hidden">
+    <div class="big">🌟</div>
+    <h1>Brawo! Super Ci poszło!</h1>
+    <div class="menu">
+      <button id="again">▶ Jeszcze raz</button>
+      <button id="tomenu">🏠 Menu</button>
+    </div>
+  </section>
+</main>
+
+<script>
+const SETS = {
+  animals: [["🐶","pies"],["🐱","kot"],["🐰","królik"],["🐮","krowa"],["🐷","świnka"],["🐸","żaba"],["🐟","ryba"],["🐥","kurczak"]],
+  colors:  [["🔴","czerwony"],["🔵","niebieski"],["🟢","zielony"],["🟡","żółty"],["🟠","pomarańczowy"],["🟣","fioletowy"]],
+  feelings:[["😀","wesoły"],["😢","smutny"],["😠","zły"],["😴","śpiący"],["😮","zdziwiony"],["😨","przestraszony"]],
+  shapes:  [["🔺","trójkąt"],["🟦","kwadrat"],["⚪","koło"],["⭐","gwiazda"],["❤️","serce"],["🔶","romb"]]
+};
+const ROUNDS = 5;
+const $ = id => document.getElementById(id);
+let mode, round, locked, current, sound = true, ctx;
+
+// Łagodne dźwięki (bez gwałtownych alarmów)
+function tone(freqs) {
+  if (!sound) return;
+  try {
+    ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+    freqs.forEach((f, i) => {
+      const o = ctx.createOscillator(), g = ctx.createGain(), t = ctx.currentTime + i * 0.18;
+      o.type = "sine"; o.frequency.value = f; o.connect(g); g.connect(ctx.destination);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.12, t + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.35); o.start(t); o.stop(t + 0.4);
+    });
+  } catch (e) {}
+}
+function speak(text) {
+  if (!sound || !window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text); u.lang = "pl-PL"; u.rate = 0.85;
+  speechSynthesis.speak(u);
+}
+function show(id) { ["menu","game","end"].forEach(s => $(s).classList.toggle("hidden", s !== id)); }
+function shuffle(a) { return a.map(x => [Math.random(), x]).sort((p, q) => p[0] - q[0]).map(p => p[1]); }
+
+function start(m) { mode = m; round = 0; show("game"); next(); }
+function next() {
+  locked = false; $("msg").textContent = "";
+  $("stars").textContent = "⭐".repeat(round) + "☆".repeat(ROUNDS - round);
+  const pool = SETS[mode];
+  current = pool[Math.floor(Math.random() * pool.length)];
+  const others = shuffle(pool.filter(p => p !== current)).slice(0, 2);
+  $("target").textContent = current[0];
+  $("label").textContent = "Znajdź taki sam: " + current[1];
+  speak("Znajdź taki sam: " + current[1]);
+  $("choices").innerHTML = "";
+  shuffle([current, ...others]).forEach(p => {
+    const b = document.createElement("button");
+    b.className = "choice"; b.textContent = p[0]; b.setAttribute("aria-label", p[1]);
+    b.onclick = () => pick(b, p);
+    $("choices").appendChild(b);
+  });
+}
+function pick(btn, p) {
+  if (locked) return;
+  if (p === current) {
+    locked = true; btn.classList.add("ok");
+    $("msg").textContent = "Dobrze! 🎉"; tone([523, 659, 784]); speak("Dobrze!");
+    round++;
+    setTimeout(() => {
+      if (round >= ROUNDS) { show("end"); tone([523, 659, 784, 1047]); speak("Brawo!"); }
+      else next();
+    }, 1600);
+  } else {
+    btn.classList.add("try"); setTimeout(() => btn.classList.remove("try"), 600);
+    $("msg").textContent = "Spróbuj jeszcze raz 🙂"; tone([392]);
+  }
+}
+
+document.querySelectorAll("[data-mode]").forEach(b => b.onclick = () => start(b.dataset.mode));
+$("back").onclick = $("tomenu").onclick = () => { speechSynthesis && speechSynthesis.cancel(); show("menu"); };
+$("again").onclick = () => start(mode);
+$("snd").onclick = () => { sound = !sound; $("snd").textContent = sound ? "🔊 Dźwięk" : "🔇 Cisza"; if (!sound) speechSynthesis && speechSynthesis.cancel(); };
+</script>
+</body>
+</html>
