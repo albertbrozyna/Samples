@@ -1,0 +1,631 @@
+<title>Zatoka Spokoju</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;800&display=swap">
+<style>
+/* Układ: jedna kolumna, duże dotykowe pola, spokojna paleta, zero presji czasu i dźwięków. */
+:root{
+  --bg:#eef4f6; --surface:#ffffff; --fg:#1f2d33; --muted:#546a72;
+  --accent:#2a7a82; --on-accent:#ffffff; --accent-soft:#d9edef; --line:#cfdde1;
+  --sun:#e9a928; --good:#2c7a4b; --good-soft:#dcf1e4; --try:#a8552b; --try-soft:#fbe9dd;
+  --font-head:'Fredoka','Trebuchet MS',system-ui,sans-serif;
+  --font-body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --fs:18px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111b1f; --surface:#1a2a30; --fg:#e7f0f2; --muted:#9db3ba;
+  --accent:#6cc3ca; --on-accent:#0d1a1d; --accent-soft:#21393e; --line:#2c444b;
+  --sun:#f2c14e; --good:#7fd6a0; --good-soft:#1c3a2a; --try:#f0a478; --try-soft:#3b2a20; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111b1f; --surface:#1a2a30; --fg:#e7f0f2; --muted:#9db3ba;
+  --accent:#6cc3ca; --on-accent:#0d1a1d; --accent-soft:#21393e; --line:#2c444b;
+  --sun:#f2c14e; --good:#7fd6a0; --good-soft:#1c3a2a; --try:#f0a478; --try-soft:#3b2a20; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:var(--fs);line-height:1.55;
+  padding-block:16px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body.big{--fs:21px}
+.wrap{max-width:760px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--font-head);font-weight:600;line-height:1.2;margin:0;text-wrap:balance}
+h1{font-size:2rem} h2{font-size:1.5rem} h3{font-size:1.15rem}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.stars{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:800;font-variant-numeric:tabular-nums}
+.stars svg{width:20px;height:20px}
+.btn{min-height:48px;padding:10px 20px;border-radius:14px;border:2px solid var(--accent);background:var(--accent);color:var(--on-accent);font-weight:800}
+.btn.ghost{background:transparent;color:var(--fg);border-color:var(--line)}
+.btn:hover{filter:brightness(1.06)}
+.btn:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+.intro{display:flex;flex-direction:column;gap:8px}
+.intro p{color:var(--muted);max-width:60ch}
+.sec{display:flex;flex-direction:column;gap:10px}
+.sec>h2{font-size:1.1rem;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;font-family:var(--font-body);font-weight:800}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.tile{text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.tile:hover{border-color:var(--accent)}
+.tile b{font-family:var(--font-head);font-size:1.15rem;font-weight:600}
+.tile span{color:var(--muted);font-size:.9rem;line-height:1.4}
+.tile i{font-style:normal;font-size:.8rem;font-weight:800;color:var(--accent)}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.meta{color:var(--muted);font-size:.85rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.story{font-size:1.2rem;font-weight:600}
+.opts{display:grid;gap:10px}
+.opts.faces{grid-template-columns:repeat(2,minmax(0,1fr))}
+.opt{text-align:left;min-height:56px;padding:12px 16px;border-radius:14px;border:2px solid var(--line);background:var(--bg)}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.faceopt{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-weight:800}
+.opt.off{opacity:.45;text-decoration:line-through}
+.opt.ok{border-color:var(--good);background:var(--good-soft)}
+.opt:disabled{cursor:default}
+.face{width:72px;height:72px}
+.fb{border-radius:14px;padding:12px 16px;display:none}
+.fb.show{display:block}
+.fb.good{background:var(--good-soft);color:var(--fg);border:1px solid var(--good)}
+.fb.try{background:var(--try-soft);color:var(--fg);border:1px solid var(--try)}
+.fb b{display:block;margin-bottom:2px}
+
+.orbwrap{display:grid;place-items:center;height:240px}
+.orb{width:120px;height:120px;border-radius:50%;background:var(--accent-soft);border:4px solid var(--accent);transform:scale(1);transition:transform 4s ease-in-out}
+.calm-motion .orb{transition:none}
+.big-word{font-family:var(--font-head);font-size:1.6rem;text-align:center}
+.bar{height:10px;border-radius:99px;background:var(--accent-soft);overflow:hidden}
+.bar>div{height:100%;width:0;background:var(--accent);transition:width 1s linear}
+.ex-list{display:grid;gap:10px}
+
+canvas.draw{width:100%;height:260px;background:#fffdf8;border:2px solid var(--line);border-radius:14px;touch-action:none;display:block}
+.swatch{width:40px;height:40px;border-radius:50%;border:3px solid var(--line);padding:0}
+.swatch.on{border-color:var(--fg)}
+
+.seq{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;padding:14px;background:var(--bg);border-radius:14px}
+.seq .slot{width:52px;height:52px;display:grid;place-items:center}
+.slot.q{border:3px dashed var(--accent);border-radius:12px;font-weight:800;color:var(--accent);font-size:1.4rem}
+.optrow{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.optrow .opt{display:grid;place-items:center;width:84px;min-height:84px;padding:8px}
+
+.pairs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.pc{aspect-ratio:1;border-radius:14px;border:2px solid var(--line);background:var(--accent-soft);display:grid;place-items:center;padding:6px;font-size:1.6rem;color:var(--accent);font-weight:800}
+.pc.up{background:var(--surface)}
+.pc.done{background:var(--good-soft);border-color:var(--good)}
+.pc .face{width:90%;height:90%}
+
+.oddgrid{display:grid;gap:10px;max-width:420px;margin-inline:auto;width:100%}
+.oddgrid button{aspect-ratio:1;border-radius:50%;border:0;padding:0}
+
+.pads{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:320px;margin-inline:auto;width:100%}
+.pad{aspect-ratio:1;border-radius:20px;border:3px solid transparent;opacity:.55}
+.pad.lit{opacity:1;border-color:var(--fg);transform:scale(1.04)}
+
+.sea{position:relative;height:56vh;min-height:320px;overflow:hidden;border-radius:18px;background:linear-gradient(var(--accent-soft),var(--surface));border:1px solid var(--line)}
+.bub{position:absolute;bottom:-70px;border-radius:50%;border:2px solid var(--accent);background:radial-gradient(circle at 30% 30%,#ffffffcc,#ffffff22 60%);padding:0;animation:rise 9s linear forwards}
+.bub.pop{animation:pop .25s ease-out forwards}
+.calm-motion .bub{bottom:auto;animation:fade 6s ease-in-out forwards}
+@keyframes rise{to{transform:translateY(-70vh)}}
+@keyframes pop{to{transform:scale(1.5);opacity:0}}
+@keyframes fade{0%{opacity:0}20%{opacity:1}80%{opacity:1}100%{opacity:0}}
+
+details{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 16px}
+summary{cursor:pointer;font-weight:800}
+details ul{margin:10px 0 0;padding-left:1.2em;display:grid;gap:6px;color:var(--muted)}
+.settings{display:flex;gap:8px;flex-wrap:wrap}
+.chip{min-height:40px;padding:6px 14px;border-radius:999px;border:2px solid var(--line);background:var(--surface);font-weight:800;font-size:.9rem}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+@media (max-width:420px){.opts.faces{gap:8px}.face{width:60px;height:60px}.pairs{gap:8px}}
+@media (prefers-reduced-motion:reduce){.orb{transition:none}.bub{animation:fade 6s ease-in-out forwards;bottom:auto}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <button class="btn ghost" id="back" hidden>← Menu</button>
+    <h1 id="brand">Zatoka Spokoju</h1>
+    <div class="stars" title="Zebrane gwiazdki"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17l-6.1 3.4 1.5-6.8L2.2 9l6.9-.7z" fill="var(--sun)"/></svg><span id="starcount">0</span></div>
+  </header>
+  <main id="app"></main>
+  <footer class="settings" aria-label="Ustawienia">
+    <button class="chip" id="s-motion" aria-pressed="false">Mniej ruchu</button>
+    <button class="chip" id="s-big" aria-pressed="false">Większy tekst</button>
+  </footer>
+</div>
+
+<script>
+/* ---------- narzędzia ---------- */
+const $=(s,r=document)=>r.querySelector(s);
+const app=$('#app');
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const store={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function deck(n){let d=[],seen=0;return{next(){if(!d.length){d=shuffle([...Array(n).keys()]);seen=0}seen++;return d.pop()},seen:()=>seen,n}}
+let stars=store.get('gwiazdki',0);
+const showStars=()=>{$('#starcount').textContent=stars};
+const addStar=()=>{stars++;store.set('gwiazdki',stars);showStars()};
+const PRAISE=['Super!','Dobrze!','Tak jest!','Świetnie!','Bardzo dobrze!','Brawo!'];
+let cleanup=null,timers=[];
+const later=(f,ms)=>{const t=setTimeout(f,ms);timers.push(t);return t};
+const clearTimers=()=>{timers.forEach(clearTimeout);timers=[]};
+
+/* ---------- ustawienia ---------- */
+let calmMotion=store.get('mniejRuchu',window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+let bigText=store.get('duzyTekst',false);
+function applySettings(){document.body.classList.toggle('calm-motion',calmMotion);document.body.classList.toggle('big',bigText);
+  $('#s-motion').setAttribute('aria-pressed',calmMotion);$('#s-big').setAttribute('aria-pressed',bigText)}
+$('#s-motion').onclick=()=>{calmMotion=!calmMotion;store.set('mniejRuchu',calmMotion);applySettings()};
+$('#s-big').onclick=()=>{bigText=!bigText;store.set('duzyTekst',bigText);applySettings()};
+
+/* ---------- twarze (SVG) ---------- */
+const F=(bg,inner)=>`<svg class="face" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="${bg}" stroke="#24343a" stroke-width="4"/>${inner}</svg>`;
+const S='fill="none" stroke="#24343a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"';
+const dot=(x,y,r=4.5)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#24343a"/>`;
+const eye=(x,y,px=0,py=0)=>`<circle cx="${x}" cy="${y}" r="8" fill="#fff" stroke="#24343a" stroke-width="3"/><circle cx="${x+px}" cy="${y+py}" r="3.5" fill="#24343a"/>`;
+const EMO={
+ radosc:{n:'radość',tip:'Radość mówi: jest mi dobrze. Możesz się nią podzielić z kimś.',svg:F('#ffe08a',dot(35,42)+dot(65,42)+`<path ${S} d="M30 58 Q50 82 70 58"/>`)},
+ smutek:{n:'smutek',tip:'Smutek mówi: coś jest dla mnie ważne. Pomaga przytulenie, rozmowa albo chwila ciszy.',svg:F('#bcd9f2',dot(35,46)+dot(65,46)+`<path ${S} d="M26 36 L42 30 M74 36 L58 30"/><path ${S} d="M33 75 Q50 58 67 75"/><path d="M35 52 q-5 9 0 11 q5 -2 0 -11z" fill="#5aa7e0"/>`)},
+ zlosc:{n:'złość',tip:'Złość mówi: coś jest nie fair. Możesz odetchnąć, odejść na chwilę i powiedzieć, czego potrzebujesz.',svg:F('#f7b3a3',dot(36,48)+dot(64,48)+`<path ${S} d="M24 30 L44 40 M76 30 L56 40"/><path ${S} d="M34 74 Q50 62 66 74"/>`)},
+ strach:{n:'strach',tip:'Strach mówi: uważaj. Możesz poszukać bezpiecznej osoby i powiedzieć jej, że się boisz.',svg:F('#d9c8f0',eye(35,44)+eye(65,44)+`<path ${S} d="M26 28 Q35 22 44 28 M56 28 Q65 22 74 28"/><path d="M40 70 Q50 62 60 70 Q50 82 40 70z" fill="#fff" stroke="#24343a" stroke-width="3"/>`)},
+ zaskoczenie:{n:'zaskoczenie',tip:'Zaskoczenie przychodzi nagle. Zwykle mija po chwili, a potem wiemy, co czujemy.',svg:F('#ffd6a5',eye(35,42)+eye(65,42)+`<path ${S} d="M26 25 Q35 18 44 25 M56 25 Q65 18 74 25"/><ellipse cx="50" cy="70" rx="7" ry="10" fill="#fff" stroke="#24343a" stroke-width="3"/>`)},
+ wstyd:{n:'wstyd',tip:'Wstyd zdarza się każdemu. Pomyłki są normalne, a inni często zapominają o nich szybciej niż my.',svg:F('#f9c6d4',dot(35,52)+dot(65,52)+`<ellipse cx="26" cy="62" rx="8" ry="5" fill="#ee7f9c" opacity=".7"/><ellipse cx="74" cy="62" rx="8" ry="5" fill="#ee7f9c" opacity=".7"/><path ${S} d="M38 74 Q44 69 50 74 Q56 79 62 74"/>`)},
+ duma:{n:'duma',tip:'Duma mówi: udało mi się! Warto zauważyć, ile wysiłku to kosztowało.',svg:F('#c8e6b0',`<path ${S} d="M28 48 Q35 40 42 48 M58 48 Q65 40 72 48"/><path ${S} d="M34 64 Q50 80 66 64"/><path d="M50 8 l3 7 7 1 -5 5 1 7 -6 -4 -6 4 1 -7 -5 -5 7 -1z" fill="#e9a928"/>`)},
+ zazdrosc:{n:'zazdrość',tip:'Zazdrość mówi: też bym tego chciał. To normalne. Możesz powiedzieć o tym zaufanej osobie.',svg:F('#b7e0cf',eye(35,46,3,0)+eye(65,46,3,0)+`<path ${S} d="M26 34 L44 38 M56 36 L74 30"/><path ${S} d="M36 72 Q50 66 64 73"/>`)},
+ znudzenie:{n:'znudzenie',tip:'Nuda mówi: potrzebuję czegoś ciekawego. Możesz wymyślić grę albo zająć ręce.',svg:F('#e0dccf',`<path ${S} d="M27 44 L43 44 M57 44 L73 44"/>`+dot(35,50,3.5)+dot(65,50,3.5)+`<path ${S} d="M38 72 L62 72"/>`)},
+ spokoj:{n:'spokój',tip:'Spokój mówi: jest mi dobrze i bezpiecznie. Zapamiętaj, co Ci w tym pomaga.',svg:F('#cfeaf0',`<path ${S} d="M28 44 Q35 50 42 44 M58 44 Q65 50 72 44"/><path ${S} d="M38 65 Q50 73 62 65"/>`)}
+};
+const EK=Object.keys(EMO);
+
+/* ---------- dane: emocje (25) ---------- */
+const EMO_Q=[
+['Ola dostaje prezent, o którym marzyła od dawna.','radosc'],
+['Kuba zgubił swoją ulubioną zabawkę i nie może jej znaleźć.','smutek'],
+['Ktoś celowo przewraca budowlę z klocków, którą Staś budował godzinę.','zlosc'],
+['Zosia słyszy dziwny hałas w ciemnym pokoju.','strach'],
+['Maja wchodzi do domu, a wszyscy krzyczą „Niespodzianka!”.','zaskoczenie'],
+['Antek pomylił się w odpowiedzi i cała klasa to usłyszała.','wstyd'],
+['Hania sama skończyła bardzo trudne puzzle.','duma'],
+['Franek widzi, że kolega dostał rower, o jakim on marzy.','zazdrosc'],
+['Lena czeka długo w poczekalni i nic się nie dzieje.','znudzenie'],
+['Michał leży na kocu i słucha cichej muzyki.','spokoj'],
+['Pies Julki wyzdrowiał po chorobie.','radosc'],
+['Deszcz pada, więc wycieczka Piotrka została odwołana.','smutek'],
+['Ktoś wpycha się przed Anię w kolejce po lody.','zlosc'],
+['Adaś widzi dużego psa, który biegnie prosto na niego.','strach'],
+['Emilka znajduje w kurtce zapomnianą dziesiątkę.','zaskoczenie'],
+['Tomek nie pamięta odpowiedzi, gdy nauczycielka pyta go przy wszystkich.','wstyd'],
+['Nauczyciel chwali Wiktora za staranną pracę.','duma'],
+['Siostra Kasi dostaje więcej ciastek niż ona.','zazdrosc'],
+['Bartek już zna temat lekcji, a nauczyciel tłumaczy go trzeci raz.','znudzenie'],
+['Alicja siedzi nad cichym jeziorem i patrzy na wodę.','spokoj'],
+['Cała rodzina Oskara pakuje się na wakacje nad morzem.','radosc'],
+['Najlepszy przyjaciel Mai przeprowadza się do innego miasta.','smutek'],
+['Ktoś nazywa Kamila brzydkim słowem przy wszystkich.','zlosc'],
+['Zuzia ma za chwilę wystąpić na scenie przed wieloma osobami.','strach'],
+['Jaś pierwszy raz sam robi kanapki dla całej rodziny.','duma']
+];
+
+/* ---------- dane: sytuacje społeczne (30): [pytanie, najlepsza, inna1, inna2, dlaczego] ---------- */
+const SOC=[
+['Chcesz dołączyć do zabawy dzieci na placu.','Podejdę i zapytam: „Czy mogę się z wami pobawić?”','Wejdę w sam środek i zabiorę piłkę.','Będę stać z daleka i czekać, aż ktoś mnie zauważy.','Pytanie mówi innym, czego chcesz. Gdy stoimy z daleka, inni często nie wiedzą, że chcemy się przyłączyć.'],
+['Koleżanka opowiada o swoim psie, a Ty wolisz mówić o dinozaurach.','Posłucham, zadam jedno pytanie o psa, a potem opowiem o dinozaurach.','Od razu zacznę mówić o dinozaurach.','Odejdę bez słowa.','Rozmowa jest jak podawanie piłki. Każdy ma swoją kolej i dzięki temu obie osoby czują się ważne.'],
+['W grze planszowej przegrywasz.','Wezmę oddech i powiem: „Dobra gra, gratulacje!”','Rzucę planszą.','Powiem, że gra jest głupia.','Przegrana bywa trudna. Oddech pomaga, a gratulacje sprawiają, że inni chętnie zagrają z Tobą znowu.'],
+['Ktoś stoi bardzo blisko Ciebie i to Ci przeszkadza.','Powiem spokojnie: „Potrzebuję trochę więcej miejsca” i zrobię krok w tył.','Popchnę tę osobę.','Nic nie powiem i będę się denerwować.','Słowa pomagają innym zrozumieć, czego potrzebujesz. Wiele osób nie wie, że stoi za blisko.'],
+['Chcesz o coś zapytać nauczyciela, ale on rozmawia z kimś innym.','Podniosę rękę i poczekam, aż skończy.','Zacznę głośno wołać.','Zrezygnuję i nie zapytam wcale.','Podniesiona ręka mówi „mam pytanie” bez przerywania innym.'],
+['Kolega płacze, bo upadł mu lunch.','Zapytam: „Czy mogę Ci pomóc?”','Zaśmieję się.','Pójdę po nauczyciela, nic nie mówiąc koledze.','Krótkie pytanie pokazuje, że widzisz drugą osobę. Poproszenie dorosłego też jest dobre, ale warto powiedzieć o tym koledze.'],
+['Dostajesz prezent, który Ci się nie podoba.','Powiem: „Dziękuję, że o mnie pomyślałeś.”','Powiem: „Nie lubię tego.”','Oddam prezent od razu.','To zdanie jest prawdziwe, bo ktoś naprawdę o Tobie pomyślał. Nie musisz mówić wszystkiego, co myślisz, żeby być szczerym.'],
+['W klasie jest bardzo głośno i boli Cię głowa.','Powiem nauczycielowi: „Jest mi za głośno. Czy mogę wyjść na chwilę lub założyć słuchawki?”','Zakryję uszy i krzyknę.','Będę siedzieć i cierpieć w ciszy.','Prośba o pomoc to dobra umiejętność. Dorośli mogą pomóc tylko wtedy, gdy wiedzą, że jest za głośno.'],
+['Ktoś przerywa Ci, gdy mówisz.','Powiem: „Chcę dokończyć, zaraz oddam Ci głos.”','Zamilknę i już nic nie powiem.','Przekrzyczę tę osobę.','Spokojne zdanie chroni Twoją kolej i nie rani drugiej osoby.'],
+['Nowy kolega siedzi sam w czasie przerwy.','Podejdę i powiem: „Cześć, jestem … Chcesz usiąść z nami?”','Będę się na niego patrzeć z daleka.','Udam, że go nie widzę.','Nowe osoby często czekają, aż ktoś zrobi pierwszy krok. Proste „cześć” bardzo pomaga.'],
+['Przypadkiem nadeptujesz komuś na stopę.','Powiem: „Przepraszam, to było niechcący. Czy wszystko w porządku?”','Nic nie powiem.','Powiem: „Sam się podstawiłeś.”','Przeprosiny mówią „widzę, że Cię zabolało”. Pytanie o stan drugiej osoby pokazuje troskę.'],
+['Koledzy żartują, a Ty nie rozumiesz żartu.','Zapytam: „Nie rozumiem, możesz wyjaśnić?”','Udam, że rozumiem, i się zaśmieję.','Obrażę się.','Pytanie to odwaga. Większość osób chętnie wyjaśnia, a Ty dowiadujesz się czegoś nowego.'],
+['Kolega prosi o Twój ulubiony przedmiot, a Ty nie chcesz go pożyczać.','Powiem: „Tego nie pożyczam, ale mogę pożyczyć inną rzecz.”','Oddam, choć nie chcę.','Schowam przedmiot i uciekę.','Masz prawo powiedzieć „nie”. Propozycja czegoś innego pokazuje, że nadal lubisz kolegę.'],
+['Ktoś śmieje się z Ciebie w złośliwy sposób.','Powiem: „Przestań, to mi się nie podoba”, a jeśli się powtórzy, powiem dorosłemu.','Odpłacę tym samym.','Zachowam to w tajemnicy.','Jasne „stop” jest ważne. Powtarzające się dokuczanie warto zawsze zgłosić dorosłemu. To nie jest skarżenie.'],
+['Chcesz grać w swoją ulubioną grę, ale reszta wybrała inną.','Zagram w ich grę teraz i zaproponuję swoją następnym razem.','Obrażę się i odejdę.','Przerwę zabawę.','Zmienianie się z wyborem gry to uczciwy sposób, żeby każdy się cieszył.'],
+['Nauczyciel Cię chwali.','Powiem: „Dziękuję!”','Odwrócę się i odejdę.','Powiem: „To nic takiego.”','Podziękowanie pokazuje, że zauważasz dobre słowa. Możesz być z siebie dumny.'],
+['Plan na dziś nagle się zmienia, a Ty lubisz stałe plany.','Poproszę o chwilę, wezmę oddech i zapytam: „Co teraz będzie po kolei?”','Zacznę krzyczeć.','Zamknę się w pokoju i nie odezwę.','Zmiany bywają trudne. Pytanie o kolejne kroki pomaga mózgowi znowu poczuć się pewnie.'],
+['Kolega mówi bardzo cicho i nie słyszysz, co mówi.','Powiem: „Przepraszam, możesz powtórzyć?”','Pokiwam głową, jakbym słyszał.','Odejdę.','Poproszenie o powtórzenie to uprzejmość i pozwala zrozumieć rozmowę.'],
+['Ktoś macha do Ciebie na powitanie.','Pomacham albo powiem: „Cześć!”','Odwrócę wzrok i nic nie zrobię.','Pokażę język.','Powitanie to mały sygnał „widzę Cię”. Wystarczy machnięcie ręką, nie musisz długo rozmawiać.'],
+['Chcesz pohuśtać się na huśtawce, ale jest zajęta.','Zapytam: „Czy mogę po Tobie?” i poczekam.','Zepchnę kogoś z huśtawki.','Stanę przed huśtawką i będę się gapić.','Pytanie i oczekiwanie to dobry sposób na zachowanie sprawiedliwej kolejki.'],
+['Jesteś w bibliotece i chcesz opowiedzieć koledze coś ciekawego.','Poszepczę albo poczekam, aż wyjdziemy.','Powiem głośno przez całą salę.','Nigdy mu tego nie powiem.','W cichych miejscach mówimy szeptem. Twoja ciekawostka nadal może poczekać.'],
+['Robisz błąd w zadaniu.','Powiem: „Pomyliłem się, poprawię to.”','Podrę kartkę.','Ukryję błąd.','Błędy pomagają się uczyć. Poprawianie to dobry krok, a nie powód do wstydu.'],
+['Ktoś chce Cię przytulić, ale Ty nie lubisz przytulania.','Powiem: „Wolę przybić piątkę.”','Odepchnę tę osobę mocno.','Pozwolę się przytulić, choć mi to przeszkadza.','Twoje ciało należy do Ciebie. Możesz zaproponować inny sposób powitania.'],
+['Koleżanka zaprasza Cię na urodziny, na których będzie głośno.','Pójdę i ustalę z rodzicem ciche miejsce oraz godzinę wyjścia.','Nie odpowiem na zaproszenie.','Pójdę i nie powiem nikomu, że jest mi trudno.','Przygotowanie planu awaryjnego pomaga cieszyć się z imprezy i dbać o siebie.'],
+['Kolega ma skrzyżowane ręce i patrzy w dół, gdy opowiadasz mu o swoim hobby.','Zapytam: „Czy mówię za dużo? Chcesz porozmawiać o czymś innym?”','Będę mówić dalej, głośniej.','Założę, że świetnie się bawi.','Ciało też wysyła sygnały. Gdy ktoś wydaje się znudzony lub zmęczony, możemy zapytać o to wprost.'],
+['Chcesz pożyczyć ołówek od koleżanki.','Zapytam: „Czy mogę pożyczyć ołówek? Oddam po lekcji.”','Wezmę bez pytania.','Wezmę i schowam do plecaka.','Pytanie o zgodę buduje zaufanie. Obietnica oddania pokazuje, że szanujesz rzeczy innych.'],
+['Przyjaciel zaprasza Cię do zabawy, a Ty jesteś bardzo zmęczony.','Powiem: „Dziś jestem zmęczony. Możemy zagrać jutro?”','Odejdę bez słowa.','Pójdę, choć ledwo stoję na nogach.','Szczere wyjaśnienie z propozycją innego terminu pokazuje, że przyjaźń jest dla Ciebie ważna.'],
+['Ktoś opowiada Ci smutną historię.','Powiem: „Przykro mi, że tak się stało.”','Zacznę opowiadać wesołą historię.','Zmienię temat.','Krótkie współczucie pokazuje, że słuchasz. Nie musisz niczego naprawiać.'],
+['Stoisz w długiej kolejce w sklepie z rodzicem.','Policzę do dziesięciu, pooddycham i poczekam.','Zacznę krzyczeć: „Szybciej!”','Wyjdę ze sklepu bez rodzica.','Oddech i liczenie pomagają przetrwać czekanie. Zostawanie z rodzicem jest bezpieczne.'],
+['Dorosły, którego nie znasz, prosi, żebyś poszedł z nim.','Powiem głośno „Nie” i pójdę do dorosłego, którego znam.','Pójdę z nim.','Pójdę, jeśli da mi cukierki.','Zasada bezpieczeństwa: z nieznajomymi nie idziemy nigdzie, nawet gdy są mili. Mówienie „nie” jest wtedy dobre.']
+];
+
+/* ---------- dane: przenośnie (15) ---------- */
+const IDI=[
+['Ktoś ma muchy w nosie','Jest w złym humorze','Ma owady na twarzy','Jest zakatarzony','Mucha w nosie to obraz. Naprawdę chodzi o zły humor.'],
+['Leje jak z cebra','Pada bardzo mocny deszcz','Ktoś nalewa wodę z cebra','Jest bardzo gorąco','Mówimy tak o ulewie, nie o prawdziwym cebrze.'],
+['Ktoś nosi głowę w chmurach','Marzy i jest nieuważny','Chodzi po chmurach','Ma bardzo wysoką głowę','Chmury w głowie oznaczają, że myśli są daleko od tego, co dzieje się obok.'],
+['Ugryźć się w język','Powstrzymać się od powiedzenia czegoś','Naprawdę ugryźć język','Powiedzieć coś głośno','Gryziemy się w język, gdy chcemy czegoś nie powiedzieć, żeby nie zranić.'],
+['To bułka z masłem','To bardzo łatwe','To śniadanie','To trudne','Mówimy tak o czymś, co jest naprawdę proste.'],
+['Mam motyle w brzuchu','Denerwuję się albo ekscytuję','Zjadłem motyla','Jestem głodny','Motyle w brzuchu to uczucie łaskotania, które czujemy przy emocjach.'],
+['Zrobić z igły widły','Przesadzić z małym problemem','Zrobić narzędzie','Uszyć coś','Z małej igły zrobić duże widły: z drobiazgu zrobić wielki kłopot.'],
+['Mieć dwie lewe ręce','Być niezdarnym w robieniu czegoś','Mieć dwie ręce po lewej stronie','Być leworęcznym','To tylko wyrażenie, ręce wyglądają zwyczajnie.'],
+['Wpaść jak śliwka w kompot','Wpaść w kłopot','Wpaść do kompotu','Wygrać nagrodę','Śliwka w kompocie jest w trudnej sytuacji, bo nie może wyjść.'],
+['Trzymać kciuki','Życzyć komuś powodzenia','Trzymać palec','Czyjś kciuk jest chory','Gdy ściskasz kciuki, wysyłasz komuś dobre myśli.'],
+['Pękać ze śmiechu','Bardzo się śmiać','Naprawdę pęknąć','Płakać','To oznacza bardzo duże rozbawienie, nic nie pęka naprawdę.'],
+['Wziąć nogi za pas','Szybko uciec','Przymocować nogi','Zdjąć spodnie','Ktoś biegnie tak szybko, jakby miał nogi przy pasku.'],
+['Ktoś ma złote ręce','Jest bardzo zdolny w majsterkowaniu','Ma ręce z metalu','Jest bogaty','To komplement. Chodzi o ręce, które potrafią naprawić prawie wszystko.'],
+['Coś spadło z nieba','Pojawiło się w idealnym momencie','Coś spadło z chmury','Coś jest bardzo drogie','Mówimy tak, gdy ktoś lub coś pojawia się akurat wtedy, gdy tego potrzebujemy.'],
+['Ktoś ma gęsią skórkę','Odczuwa dreszcze ze strachu lub zimna','Ma skórę z gęsi','Jest bardzo gruby','Na skórze pojawiają się małe wypukłości, podobne do skóry gęsi.']
+];
+
+/* ---------- dane: wyciszanie (10) ---------- */
+const CALM=[
+{t:'Balonik w brzuchu',d:'Wolne oddychanie brzuchem.',steps:['Usiądź wygodnie. Połóż dłoń na brzuchu.','Wyobraź sobie, że w brzuchu masz balonik. Wdech nosem go nadmuchuje, wydech ustami powoli go opróżnia.'],breath:{in:4,hold:0,out:6,hold2:0,cycles:5}},
+{t:'Kwadrat oddechu',d:'Oddychanie po bokach kwadratu.',steps:['Wyobraź sobie kwadrat. Każdy bok trwa tyle samo.','Wdech, zatrzymanie, wydech, zatrzymanie. Każdy krok liczysz do czterech.'],breath:{in:4,hold:4,out:4,hold2:4,cycles:4}},
+{t:'Gorące kakao',d:'Wąchanie i dmuchanie.',steps:['Wyobraź sobie kubek gorącego kakao.','Wdech nosem: pachnie czekoladą. Wydech ustami: dmuchasz, żeby ostygło.'],breath:{in:4,hold:0,out:6,hold2:0,cycles:5}},
+{t:'Pięć zmysłów',d:'Zauważ rzeczy wokół siebie.',steps:['Rozejrzyj się i znajdź 5 rzeczy, które widzisz.','Znajdź 4 rzeczy, których możesz dotknąć.','Wsłuchaj się w 3 dźwięki.','Poszukaj 2 zapachów.','Pomyśl o 1 smaku, który lubisz. Weź spokojny wdech.']},
+{t:'Uścisk motyla',d:'Przytulenie siebie.',steps:['Skrzyżuj ręce na piersi, dłonie na ramionach. To są skrzydła motyla.','Poklep delikatnie ramiona raz lewą, raz prawą ręką.','Rób to wolno, oddychaj spokojnie i patrz przed siebie. Zrób to 20 razy.']},
+{t:'Napinam i puszczam',d:'Mięśnie jak guma.',steps:['Zaciśnij mocno pięści na 5 sekund, potem puść.','Unieś ramiona do uszu na 5 sekund, potem puść.','Zmarszcz twarz jak cytryna na 5 sekund, potem rozluźnij.','Napnij brzuch i nogi na 5 sekund, potem puść. Poczuj, jak ciało robi się cięższe.']},
+{t:'Leniwa ósemka',d:'Rysowanie ósemki palcem.',steps:['Wyciągnij rękę przed siebie i kciuk do góry.','Rysuj w powietrzu ósemkę leżącą na boku, bardzo powoli.','Patrz na kciuk, oddychaj spokojnie. Zrób 5 okrążeń, potem zmień rękę.']},
+{t:'Odliczanie z oddechem',d:'Od dziesięciu do jednego.',steps:['Zamknij oczy albo patrz w jeden punkt.','Wdech i wydech. Przy wydechu licz po cichu: 10.','Z każdym kolejnym wydechem liczysz o jeden mniej, aż do 1.','Dojdź do jedynki i powiedz sobie: „Jest spokojniej”.']},
+{t:'Moje bezpieczne miejsce',d:'Wyobraź sobie miejsce, gdzie jest Ci dobrze.',steps:['Zamknij oczy i wyobraź sobie miejsce, w którym czujesz się bezpiecznie. Może to być pokój, las albo plaża.','Co tam widzisz? Jakie kolory?','Co tam słyszysz? Jaki jest zapach?','Zostań tam przez trzy oddechy. Możesz wrócić tu, kiedy chcesz.']},
+{t:'Ciężki koc',d:'Poczuj, jak ciało robi się ciężkie.',steps:['Połóż się lub usiądź i wyobraź sobie ciężki, miękki koc.','Złóż dłonie i mocno dociśnij je do siebie przez 10 sekund. Poczuj nacisk.','Puść i poczuj, jak ręce stają się ciężkie jak pod kocem.','Weź trzy spokojne oddechy.']}
+];
+
+/* ---------- dane: wyobraźnia (15) ---------- */
+const IMG=[
+'Wymyśl zwierzę ze skrzydłami motyla i ogonem lwa. Jak się nazywa i co lubi jeść?',
+'Na plaży znajdujesz zamknięte pudełko. Co jest w środku?',
+'Wyobraź sobie dom zbudowany na chmurze. Jakie ma pokoje?',
+'Możesz mieć jedną supermoc przez jeden dzień. Którą wybierasz i co z nią robisz?',
+'Robot pomaga w Twojej szkole. Co umie robić i jak ma na imię?',
+'Wymyśl nowe święto. Jak się je obchodzi i jakie jest jedzenie?',
+'Gdzie mieszkają kolory, kiedy nikt na nie nie patrzy?',
+'Wymyśl pojazd, którym możesz podróżować po dnie oceanu.',
+'Planeta, na której wszystko jest miękkie. Jak wygląda życie na niej?',
+'Wymyśl nowy smak lodów i jego nazwę.',
+'Co robią zabawki, kiedy nikt na nie nie patrzy?',
+'Narysuj wyspę, której mapa składa się z Twoich ulubionych rzeczy.',
+'Smok boi się ognia. Jak mu pomożesz?',
+'Wyobraź sobie najcichsze miejsce na świecie. Jak tam jest?',
+'Wymyśl maszynę, która łapie dobre sny. Jak działa?'
+];
+
+/* ---------- dane: ruch (15) ---------- */
+const MOVE=[
+{t:'Pchanie ściany',d:'Stań przed ścianą i pchaj ją obiema rękami, jakbyś chciał ją przesunąć. Dociskaj stopy do podłogi.',s:15},
+{t:'Chód niedźwiedzia',d:'Idź na czworakach z prostymi rękami i nogami. Idź powoli po pokoju, jak duży niedźwiedź.',s:20},
+{t:'Chód kraba',d:'Usiądź, oprzyj ręce z tyłu, unieś biodra i chodź jak krab, w tył i w przód.',s:20},
+{t:'Ściskanie piłeczki',d:'Ściskaj mocno dłonią piłeczkę, gąbkę lub poduszkę, a potem powoli rozluźniaj.',s:20},
+{t:'Skoki gwiazdy',d:'Zrób 10 skoków z rozstawianiem rąk i nóg. Licz na głos.',s:20},
+{t:'Postawa drzewa',d:'Stań na jednej nodze. Ręce złóż nad głową jak gałęzie. Potem zmień nogę.',s:20},
+{t:'Wielki uścisk',d:'Obejmij się mocno rękami i ściskaj siebie przez kilka sekund. Potem powoli puść.',s:10},
+{t:'Kołysanie',d:'Usiądź na podłodze, przytul kolana i kołysz się w przód i w tył.',s:25},
+{t:'Kot się przeciąga',d:'Stań na czworakach. Wygnij plecy w górę jak kot, a potem w dół. Powtórz kilka razy.',s:20},
+{t:'Dłonie do dłoni',d:'Złóż dłonie przed sobą i dociskaj je mocno do siebie przez 10 sekund. Potem rozluźnij.',s:15},
+{t:'Wielkie koła rękami',d:'Kręć ramionami do tyłu jak pływak, potem do przodu. Powoli i szeroko.',s:20},
+{t:'Stop-klatka',d:'Idź po pokoju w swoim tempie. Co kilka kroków powiedz sobie „stop” i zamrzyj na 3 sekundy.',s:25},
+{t:'Chodzenie po linii',d:'Połóż sznurek lub wyobraź sobie linię. Idź po niej stopa za stopą, jak linoskoczek.',s:25},
+{t:'Pchanie krzesła',d:'Usiądź na krześle i unieś się na rękach, pchając siedzisko. Utrzymaj kilka sekund.',s:10},
+{t:'Wolny taniec',d:'Zrób 5 powolnych ruchów rękami, jakbyś tańczył pod wodą. Bez pośpiechu.',s:25}
+];
+
+/* ---------- zadania generowane: kształty ---------- */
+const COLS=['#d8452f','#2a7ac9','#e9a928','#2c9a5a','#8b4cb8'];
+const SHAPES=['circle','square','triangle','diamond'];
+function itemSvg(it,sz=44){
+  const c=it.c, st='stroke="#24343a" stroke-width="3"';
+  const g={circle:`<circle cx="25" cy="25" r="19" fill="${c}" ${st}/>`,
+    square:`<rect x="7" y="7" width="36" height="36" rx="4" fill="${c}" ${st}/>`,
+    triangle:`<path d="M25 6 L45 42 H5Z" fill="${c}" ${st} stroke-linejoin="round"/>`,
+    diamond:`<path d="M25 4 L46 25 L25 46 L4 25Z" fill="${c}" ${st} stroke-linejoin="round"/>`}[it.s];
+  return `<svg viewBox="0 0 50 50" width="${sz}" height="${sz}" aria-hidden="true">${g}</svg>`;
+}
+
+/* ---------- router ---------- */
+const VIEWS={
+ emocje:{g:0,t:'Co czują inni?',d:'Dopasuj uczucie do sytuacji.',n:'25 sytuacji',r:vEmo},
+ spol:{g:0,t:'Co zrobię?',d:'Wybierz dobre rozwiązanie w trudnej sytuacji.',n:'30 sytuacji',r:vSoc},
+ przen:{g:0,t:'Co to znaczy?',d:'Zagadki ze słów, które mają ukryte znaczenie.',n:'15 powiedzeń',r:vIdi},
+ cisza:{g:1,t:'Wyciszenie',d:'Oddech, zmysły i wyobraźnia na uspokojenie.',n:'10 ćwiczeń',r:vCalm},
+ babelki:{g:1,t:'Bąbelki',d:'Pękaj bąbelki w swoim tempie. Bez punktów.',n:'bez końca',r:vBubbles},
+ ruch:{g:1,t:'Przerwa ruchowa',d:'Mocne i wolne ruchy dla ciała.',n:'15 ruchów',r:vMove},
+ wyobraznia:{g:2,t:'Wyobraźnia',d:'Wymyślaj, rysuj i opowiadaj.',n:'15 pomysłów',r:vImg},
+ wzory:{g:2,t:'Wzory',d:'Co będzie dalej w rządku?',n:'bez końca',r:vPat},
+ pary:{g:2,t:'Pary',d:'Znajdź takie same twarze.',n:'zawsze inne',r:vPairs},
+ inny:{g:2,t:'Znajdź inny',d:'Który kolor jest trochę inny?',n:'bez końca',r:vOdd},
+ kolejnosc:{g:2,t:'Kolejność',d:'Zapamiętaj i powtórz kolory.',n:'bez końca',r:vSeq}
+};
+const GROUPS=['Rozumiem ludzi','Uspokajam ciało i głowę','Wyobraźnia i sprawność'];
+function go(v){location.hash=v==='menu'?'':v}
+function route(){
+  if(cleanup){cleanup();cleanup=null}clearTimers();
+  const v=location.hash.slice(1);
+  app.innerHTML='';
+  if(VIEWS[v]){$('#back').hidden=false;$('#brand').textContent=VIEWS[v].t;VIEWS[v].r(app)}
+  else{$('#back').hidden=true;$('#brand').textContent='Zatoka Spokoju';home()}
+  window.scrollTo(0,0);
+}
+$('#back').onclick=()=>go('menu');
+addEventListener('hashchange',route);
+
+function home(){
+  const total=25+30+15+10+15+15;
+  let h=`<div class="intro"><h2>Wybierz, na co masz ochotę</h2><p>Tu nie ma czasu ani przegranych. Możesz zacząć, skończyć i wrócić, kiedy chcesz. Przygotowano ${total} zadań z historyjkami, a gry ze wzorami i kolorami są zawsze inne.</p></div>`;
+  GROUPS.forEach((g,i)=>{
+    h+=`<section class="sec"><h2>${g}</h2><div class="tiles">`+
+      Object.entries(VIEWS).filter(([k,v])=>v.g===i).map(([k,v])=>`<button class="tile" data-v="${k}"><b>${v.t}</b><span>${v.d}</span><i>${v.n}</i></button>`).join('')+`</div></section>`;
+  });
+  h+=`<details><summary>Dla rodzica lub terapeuty</summary><ul>
+    <li>Gra uzupełnia pracę nad umiejętnościami społecznymi, regulacją emocji i integracją sensoryczną. Nie zastępuje terapii.</li>
+    <li>Najlepiej grać razem: po każdym zadaniu zapytajcie „a jak to wygląda u Ciebie?”.</li>
+    <li>Nie ma limitu czasu, utraty punktów ani dźwięków. Nieprawidłowa odpowiedź wyłącza tylko tę opcję, aby można było spróbować ponownie.</li>
+    <li>Zadania w kartach losują się bez powtórzeń, dopóki nie zostaną wszystkie pokazane w danej turze.</li>
+    <li>Ustawienia „Mniej ruchu” i „Większy tekst” są na dole strony. Gwiazdki zapisują się tylko w tej przeglądarce.</li>
+    <li>Sytuacje i odpowiedzi możesz zmienić w pliku HTML (tablice SOC, EMO_Q, IDI, CALM, IMG, MOVE).</li></ul></details>`;
+  app.innerHTML=h;
+  app.querySelectorAll('.tile').forEach(b=>b.onclick=()=>go(b.dataset.v));
+}
+
+/* ---------- wspólne: karta z pytaniem ---------- */
+function setFb(box,kind,html){box.className='fb show '+kind;box.innerHTML=html}
+function nextBtn(el,fn,label='Następne'){const b=document.createElement('button');b.className='btn';b.textContent=label;b.onclick=fn;el.appendChild(b)}
+
+/* ---------- emocje ---------- */
+const dEmo=deck(EMO_Q.length);
+function vEmo(root){
+  const i=dEmo.next(),[story,key]=EMO_Q[i];
+  const opts=shuffle([key,...shuffle(EK.filter(k=>k!==key)).slice(0,3)]);
+  let tries=0,done=false;
+  root.innerHTML=`<div class="card"><div class="meta">Sytuacja ${dEmo.seen()} z ${dEmo.n}</div>
+    <p class="story">${story}</p><p>Jak może się czuć ta osoba?</p>
+    <div class="opts faces">${opts.map(k=>`<button class="opt faceopt" data-k="${k}">${EMO[k].svg}${EMO[k].n}</button>`).join('')}</div>
+    <div class="fb" role="status" aria-live="polite"></div><div class="row" id="act"></div></div>`;
+  const fb=$('.fb',root),act=$('#act',root);
+  root.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    if(done)return;
+    if(b.dataset.k===key){done=true;b.classList.add('ok');root.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+      if(tries===0)addStar();
+      setFb(fb,'good',`<b>${pick(PRAISE)}</b>${EMO[key].tip}`);nextBtn(act,()=>route())}
+    else{tries++;b.classList.add('off');b.disabled=true;setFb(fb,'try','<b>To nie to.</b>Spróbuj jeszcze raz. Zastanów się, co mogłaby czuć ta osoba.')}
+  });
+}
+
+/* ---------- sytuacje społeczne ---------- */
+const dSoc=deck(SOC.length);
+function vSoc(root){
+  const i=dSoc.next(),[q,best,w1,w2,why]=SOC[i];
+  const opts=shuffle([best,w1,w2]);
+  let tries=0,done=false;
+  root.innerHTML=`<div class="card"><div class="meta">Sytuacja ${dSoc.seen()} z ${dSoc.n}</div>
+    <p class="story">${q}</p><p>Co możesz zrobić?</p>
+    <div class="opts">${opts.map((o,k)=>`<button class="opt" data-k="${k}">${o}</button>`).join('')}</div>
+    <div class="fb" role="status" aria-live="polite"></div><div class="row" id="act"></div></div>`;
+  const fb=$('.fb',root),act=$('#act',root),bs=[...root.querySelectorAll('.opt')];
+  bs.forEach((b,k)=>b.onclick=()=>{
+    if(done)return;
+    if(opts[k]===best){done=true;b.classList.add('ok');bs.forEach(x=>x.disabled=true);
+      if(tries===0)addStar();
+      setFb(fb,'good',`<b>${pick(PRAISE)}</b>${why}`);nextBtn(act,()=>route())}
+    else{tries++;b.classList.add('off');b.disabled=true;setFb(fb,'try','<b>Ta opcja może być trudna dla Ciebie lub dla innych.</b>Poszukaj innej.')}
+  });
+}
+
+/* ---------- przenośnie ---------- */
+const dIdi=deck(IDI.length);
+function vIdi(root){
+  const i=dIdi.next(),[ph,best,w1,w2,why]=IDI[i];
+  const opts=shuffle([best,w1,w2]);let tries=0,done=false;
+  root.innerHTML=`<div class="card"><div class="meta">Powiedzenie ${dIdi.seen()} z ${dIdi.n}</div>
+    <p class="story">„${ph}”</p><p>Co to naprawdę znaczy?</p>
+    <div class="opts">${opts.map((o,k)=>`<button class="opt" data-k="${k}">${o}</button>`).join('')}</div>
+    <div class="fb" role="status" aria-live="polite"></div><div class="row" id="act"></div></div>`;
+  const fb=$('.fb',root),act=$('#act',root),bs=[...root.querySelectorAll('.opt')];
+  bs.forEach((b,k)=>b.onclick=()=>{
+    if(done)return;
+    if(opts[k]===best){done=true;b.classList.add('ok');bs.forEach(x=>x.disabled=true);if(tries===0)addStar();
+      setFb(fb,'good',`<b>${pick(PRAISE)}</b>${why}`);nextBtn(act,()=>route())}
+    else{tries++;b.classList.add('off');b.disabled=true;setFb(fb,'try','<b>Prawie.</b>To mogłoby znaczyć dosłownie, ale ludzie mówią to w innym znaczeniu. Spróbuj jeszcze raz.')}
+  });
+}
+
+/* ---------- wyciszenie ---------- */
+function vCalm(root){
+  root.innerHTML=`<div class="intro"><p>Wybierz ćwiczenie. Jeśli coś Ci nie pasuje, możesz je pominąć i wybrać inne.</p></div><div class="ex-list">`+
+    CALM.map((c,i)=>`<button class="tile" data-i="${i}"><b>${c.t}</b><span>${c.d}</span></button>`).join('')+'</div>';
+  root.querySelectorAll('.tile').forEach(b=>b.onclick=()=>calmEx(root,+b.dataset.i));
+}
+function calmEx(root,i){
+  const c=CALM[i];let s=0;
+  const render=()=>{
+    clearTimers();
+    root.innerHTML=`<div class="card"><div class="meta">${c.t}</div><div id="body"></div><div class="row" id="act"></div></div>`;
+    const body=$('#body',root),act=$('#act',root);
+    if(s<c.steps.length){
+      body.innerHTML=`<p class="story">${c.steps[s]}</p><div class="bar"><div style="width:${(s+1)/(c.steps.length+(c.breath?1:0))*100}%"></div></div>`;
+      const b=document.createElement('button');b.className='btn';b.textContent=(s===c.steps.length-1&&!c.breath)?'Gotowe':'Dalej';
+      b.onclick=()=>{s++;if(s>=c.steps.length&&!c.breath){addStar();root.innerHTML=`<div class="card"><p class="story">Dobra robota. Jak się teraz czujesz?</p><div class="row" id="act"></div></div>`;const a=$('#act',root);nextBtn(a,()=>vCalm(root),'Wybierz inne ćwiczenie')}else render()};
+      act.appendChild(b);
+    }else breathUI(root,body,act,c.breath);
+  };
+  render();
+}
+function breathUI(root,body,act,cfg){
+  body.innerHTML=`<div class="orbwrap"><div class="orb" id="orb"></div></div><div class="big-word" id="word">Gotowy?</div><p style="text-align:center;color:var(--muted)" id="cyc"></p>`;
+  const orb=$('#orb',root),word=$('#word',root),cyc=$('#cyc',root);
+  const ph=[['Wdech',cfg.in,1.6],['Zatrzymaj',cfg.hold,1.6],['Wydech',cfg.out,1],['Zatrzymaj',cfg.hold2,1]].filter(p=>p[1]>0);
+  let cycle=0,pi=0,running=false;
+  const step=()=>{
+    if(cycle>=cfg.cycles){word.textContent='Gotowe';cyc.textContent='';orb.style.transform='scale(1)';addStar();
+      act.innerHTML='';nextBtn(act,()=>vCalm(root),'Wybierz inne ćwiczenie');return}
+    const [name,sec,sc]=ph[pi];
+    word.textContent=name;cyc.textContent=`Oddech ${cycle+1} z ${cfg.cycles}`;
+    orb.style.transitionDuration=sec+'s';orb.style.transform=`scale(${sc})`;
+    later(()=>{pi++;if(pi>=ph.length){pi=0;cycle++}step()},sec*1000);
+  };
+  act.innerHTML='';
+  const start=document.createElement('button');start.className='btn';start.textContent='Zacznij';
+  start.onclick=()=>{if(running)return;running=true;start.disabled=true;step()};
+  act.appendChild(start);
+  const stop=document.createElement('button');stop.className='btn ghost';stop.textContent='Przerwij';stop.onclick=()=>vCalm(root);act.appendChild(stop);
+}
+
+/* ---------- bąbelki ---------- */
+function vBubbles(root){
+  root.innerHTML=`<div class="intro"><p>Dotknij bąbelka, żeby pękł. Nic się nie liczy i nic nie trzeba. Możesz po prostu patrzeć.</p></div><div class="sea" id="sea"></div>`;
+  const sea=$('#sea',root);
+  const spawn=()=>{
+    const d=document.createElement('button'),sz=36+Math.random()*50;
+    d.className='bub';d.setAttribute('aria-label','Bąbelek');
+    d.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*(sea.clientWidth-sz)}px;`+(calmMotion?`top:${Math.random()*(sea.clientHeight-sz)}px;`:'');
+    d.style.animationDuration=(calmMotion?6:7+Math.random()*5)+'s';
+    d.onclick=()=>{d.classList.add('pop');d.style.animationDuration='.25s';setTimeout(()=>d.remove(),260)};
+    d.addEventListener('animationend',e=>{if(e.animationName!=='pop')d.remove()});
+    sea.appendChild(d);
+  };
+  for(let i=0;i<5;i++)spawn();
+  const iv=setInterval(()=>{if(sea.childElementCount<12)spawn()},900);
+  cleanup=()=>clearInterval(iv);
+}
+
+/* ---------- ruch ---------- */
+const dMove=deck(MOVE.length);
+function vMove(root){
+  const m=MOVE[dMove.next()];
+  root.innerHTML=`<div class="card"><div class="meta">Ruch ${dMove.seen()} z ${dMove.n}</div><h2>${m.t}</h2><p class="story">${m.d}</p>
+    <div class="bar"><div id="tb"></div></div><p id="tt" style="color:var(--muted)">Zrób to tyle, ile masz ochotę. Zegar jest dla Ciebie: ${m.s} s.</p>
+    <div class="row" id="act"></div></div>`;
+  const act=$('#act',root),tb=$('#tb',root),tt=$('#tt',root);
+  const start=document.createElement('button');start.className='btn';start.textContent='Start';
+  start.onclick=()=>{start.disabled=true;let left=m.s;tb.style.transition='none';tb.style.width='0';
+    requestAnimationFrame(()=>{tb.style.transition=`width ${m.s}s linear`;tb.style.width='100%'});
+    const tick=()=>{tt.textContent=`Zostało ${left} s`;if(left<=0){tt.textContent='Koniec. Jak się czuje Twoje ciało?';addStar();return}left--;later(tick,1000)};tick()};
+  act.appendChild(start);
+  const sk=document.createElement('button');sk.className='btn ghost';sk.textContent='Inny ruch';sk.onclick=()=>route();act.appendChild(sk);
+}
+
+/* ---------- wyobraźnia ---------- */
+const dImg=deck(IMG.length);
+function vImg(root){
+  const p=IMG[dImg.next()];
+  const colors=['#24343a','#d8452f','#2a7ac9','#e9a928','#2c9a5a','#8b4cb8'];
+  root.innerHTML=`<div class="card"><div class="meta">Pomysł ${dImg.seen()} z ${dImg.n}</div><p class="story">${p}</p>
+    <canvas class="draw" id="cv" aria-label="Pole do rysowania"></canvas>
+    <div class="row" id="sw">${colors.map((c,i)=>`<button class="swatch${i===0?' on':''}" data-c="${c}" style="background:${c}" aria-label="Kolor ${i+1}"></button>`).join('')}
+      <button class="btn ghost" id="clr">Wyczyść</button></div>
+    <p style="color:var(--muted)">Możesz rysować, opowiedzieć głośno albo zrobić jedno i drugie. Nie ma złych pomysłów.</p>
+    <div class="row" id="act"></div></div>`;
+  const cv=$('#cv',root),ctx=cv.getContext('2d');let color=colors[0],down=false;
+  const fit=()=>{const r=cv.getBoundingClientRect(),d=window.devicePixelRatio||1;cv.width=r.width*d;cv.height=r.height*d;ctx.scale(d,d);ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=5};fit();
+  const pos=e=>{const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]};
+  cv.onpointerdown=e=>{down=true;cv.setPointerCapture(e.pointerId);const[x,y]=pos(e);ctx.strokeStyle=color;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+.1,y+.1);ctx.stroke()};
+  cv.onpointermove=e=>{if(!down)return;const[x,y]=pos(e);ctx.lineTo(x,y);ctx.stroke()};
+  cv.onpointerup=cv.onpointercancel=()=>{down=false};
+  root.querySelectorAll('.swatch').forEach(b=>b.onclick=()=>{color=b.dataset.c;root.querySelectorAll('.swatch').forEach(x=>x.classList.toggle('on',x===b))});
+  $('#clr',root).onclick=()=>{ctx.clearRect(0,0,cv.width,cv.height)};
+  const act=$('#act',root);
+  const told=document.createElement('button');told.className='btn';told.textContent='Gotowe, opowiedziane lub narysowane';
+  told.onclick=()=>{told.disabled=true;addStar();setTimeout(()=>route(),400)};
+  act.appendChild(told);
+  const sk=document.createElement('button');sk.className='btn ghost';sk.textContent='Inny pomysł';sk.onclick=()=>route();act.appendChild(sk);
+}
+
+/* ---------- wzory (generowane) ---------- */
+function vPat(root){
+  const mode=pick(['color','shape','both']),L=pick([2,2,3,3,4]);
+  const pool=[];
+  if(mode==='color')COLS.forEach(c=>pool.push({c,s:'circle'}));
+  else if(mode==='shape')SHAPES.forEach(s=>pool.push({c:pick(COLS),s}));
+  else COLS.forEach(c=>SHAPES.forEach(s=>pool.push({c,s})));
+  if(mode==='shape'){const c=pick(COLS);pool.forEach(p=>p.c=c)}
+  const key=x=>x.c+x.s;
+  let unit=shuffle(pool).slice(0,L);
+  if(L===4&&mode==='color')unit=unit.slice(0,3);
+  const U=unit.length;
+  const total=U*2+(U>2?U-1:1);
+  const seq=[];for(let i=0;i<total;i++)seq.push(unit[i%U]);
+  const ans=seq.pop();
+  const wrong=shuffle(pool.filter(x=>key(x)!==key(ans))).slice(0,2);
+  const opts=shuffle([ans,...wrong]);let tries=0,done=false;
+  root.innerHTML=`<div class="card"><div class="meta">Wzór</div><p class="story">Co pasuje na końcu rządka?</p>
+    <div class="seq">${seq.map(x=>`<div class="slot">${itemSvg(x,46)}</div>`).join('')}<div class="slot q" aria-label="brakujący element">?</div></div>
+    <div class="optrow">${opts.map((o,k)=>`<button class="opt" data-k="${k}" aria-label="Opcja ${k+1}">${itemSvg(o,52)}</button>`).join('')}</div>
+    <div class="fb" role="status" aria-live="polite"></div><div class="row" id="act"></div></div>`;
+  const fb=$('.fb',root),act=$('#act',root),bs=[...root.querySelectorAll('.opt')];
+  bs.forEach((b,k)=>b.onclick=()=>{
+    if(done)return;
+    if(key(opts[k])===key(ans)){done=true;b.classList.add('ok');bs.forEach(x=>x.disabled=true);if(tries===0)addStar();
+      setFb(fb,'good',`<b>${pick(PRAISE)}</b>Wzór powtarza się co ${U} ${U<5?'elementy':'elementów'}.`);nextBtn(act,()=>route(),'Następny wzór')}
+    else{tries++;b.classList.add('off');b.disabled=true;setFb(fb,'try','<b>Prawie.</b>Spójrz na początek rządka i zobacz, co się powtarza.')}
+  });
+}
+
+/* ---------- pary ---------- */
+function vPairs(root){
+  const faces=shuffle(EK).slice(0,6),cards=shuffle([...faces,...faces]);
+  let first=null,lock=false,moves=0,found=0;
+  root.innerHTML=`<div class="card"><div class="meta">Ruchy: <span id="mv">0</span> · Znalezione pary: <span id="fd">0</span> z 6</div>
+    <div class="pairs">${cards.map((k,i)=>`<button class="pc" data-i="${i}" aria-label="Karta ${i+1}">?</button>`).join('')}</div>
+    <div class="fb" role="status" aria-live="polite"></div><div class="row" id="act"></div></div>`;
+  const bs=[...root.querySelectorAll('.pc')],fb=$('.fb',root);
+  const show=i=>{bs[i].classList.add('up');bs[i].innerHTML=EMO[cards[i]].svg;bs[i].setAttribute('aria-label',EMO[cards[i]].n)};
+  const hide=i=>{bs[i].classList.remove('up');bs[i].textContent='?';bs[i].setAttribute('aria-label','Karta '+(i+1))};
+  bs.forEach((b,i)=>b.onclick=()=>{
+    if(lock||b.classList.contains('up'))return;
+    show(i);
+    if(first===null){first=i;return}
+    moves++;$('#mv',root).textContent=moves;
+    if(cards[first]===cards[i]){bs[first].classList.add('done');b.classList.add('done');found++;$('#fd',root).textContent=found;first=null;
+      if(found===6){addStar();setFb(fb,'good','<b>Wszystkie pary znalezione.</b>Dobra robota!');nextBtn($('#act',root),()=>route(),'Zagraj jeszcze raz')}}
+    else{lock=true;const a=first;first=null;later(()=>{hide(a);hide(i);lock=false},1100)}
+  });
+}
+
+/* ---------- znajdź inny ---------- */
+let oddLevel=0;
+function vOdd(root){
+  const size=oddLevel<3?3:oddLevel<7?4:5;
+  const diff=Math.max(8,34-oddLevel*3);
+  const hue=Math.floor(Math.random()*360),odd=Math.floor(Math.random()*size*size);
+  const base=`hsl(${hue} 65% 52%)`,alt=`hsl(${(hue+diff)%360} 65% 52%)`;
+  root.innerHTML=`<div class="card"><div class="meta">Poziom ${oddLevel+1}</div><p class="story">Który kolor jest trochę inny?</p>
+    <div class="oddgrid" style="grid-template-columns:repeat(${size},1fr)">${Array.from({length:size*size},(_,i)=>`<button data-i="${i}" style="background:${i===odd?alt:base}" aria-label="Kółko ${i+1}"></button>`).join('')}</div>
+    <div class="fb" role="status" aria-live="polite"></div><div class="row" id="act"></div></div>`;
+  const fb=$('.fb',root);let done=false;
+  root.querySelectorAll('.oddgrid button').forEach(b=>b.onclick=()=>{
+    if(done)return;
+    if(+b.dataset.i===odd){done=true;oddLevel++;addStar();b.style.outline='4px solid var(--fg)';setFb(fb,'good',`<b>${pick(PRAISE)}</b>Widzisz różnicę.`);nextBtn($('#act',root),()=>route(),'Dalej')}
+    else{b.style.opacity='.35';b.disabled=true;setFb(fb,'try','<b>Jeszcze nie.</b>Spokojnie, popatrz jeszcze raz.')}
+  });
+}
+
+/* ---------- kolejność (Simon) ---------- */
+function vSeq(root){
+  const cols=['#d8452f','#2a7ac9','#e9a928','#2c9a5a'];
+  let seq=[pick([0,1,2,3]),pick([0,1,2,3])],pos=0,playing=false;
+  root.innerHTML=`<div class="card"><div class="meta">Długość: <span id="len">2</span></div><p class="story" id="msg">Patrz, a potem powtórz tę samą kolejność.</p>
+    <div class="pads">${cols.map((c,i)=>`<button class="pad" data-i="${i}" style="background:${c}" aria-label="Kolor ${i+1}"></button>`).join('')}</div>
+    <div class="fb" role="status" aria-live="polite"></div><div class="row" id="act"></div></div>`;
+  const pads=[...root.querySelectorAll('.pad')],msg=$('#msg',root),act=$('#act',root),fb=$('.fb',root);
+  const light=(i,ms)=>{pads[i].classList.add('lit');later(()=>pads[i].classList.remove('lit'),ms)};
+  const play=()=>{playing=true;pos=0;fb.className='fb';msg.textContent='Patrz uważnie…';$('#len',root).textContent=seq.length;
+    seq.forEach((s,k)=>later(()=>light(s,500),900+k*900));
+    later(()=>{playing=false;msg.textContent='Teraz Twoja kolej.'},900+seq.length*900)};
+  const b=document.createElement('button');b.className='btn';b.textContent='Zacznij';b.onclick=()=>{b.remove();play()};act.appendChild(b);
+  const rp=document.createElement('button');rp.className='btn ghost';rp.textContent='Pokaż jeszcze raz';rp.onclick=()=>{if(!playing&&!b.isConnected)play()};
+  act.appendChild(rp);
+  pads.forEach((p,i)=>p.onclick=()=>{
+    if(playing||b.isConnected)return;
+    light(i,250);
+    if(seq[pos]===i){pos++;
+      if(pos===seq.length){
+        if(seq.length>=8){addStar();setFb(fb,'good','<b>Brawo!</b>Osiem kolorów zapamiętane. Zaczynamy od nowa.');seq=[pick([0,1,2,3]),pick([0,1,2,3])];later(play,2500)}
+        else{playing=true;setFb(fb,'good',`<b>${pick(PRAISE)}</b>Dodajemy jeden kolor.`);seq.push(pick([0,1,2,3]));later(play,1400)}
+      }
+    }else{playing=true;setFb(fb,'try','<b>Prawie.</b>Pokażę tę samą kolejność jeszcze raz.');later(play,1600)}
+  });
+}
+
+/* ---------- start ---------- */
+applySettings();showStars();route();
+</script>
