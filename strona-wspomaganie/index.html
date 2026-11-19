@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mała Przystań – Centrum Wsparcia Edukacyjnego</title>
+<meta name="description" content="Kompleksowe wsparcie edukacyjne dla dzieci: nauczyciele wspomagający, zajęcia indywidualne, terapia pedagogiczna i współpraca ze szkołami. Wszystkim zarządzamy za Ciebie.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fffaf3;--ink:#2b2a33;--mute:#6b6978;--brand:#3f8f86;--brand-d:#2c6b64;--sun:#f6b94a;--coral:#ef7b63;--sky:#e6f3f1;--card:#fff;--line:#eee5d8;--r:22px}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:Nunito,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:17px}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.15;color:var(--ink)}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1160px;margin:auto;padding:0 20px}
+section{padding:88px 0}
+.eyebrow{display:inline-block;font-weight:800;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--brand);background:var(--sky);padding:6px 14px;border-radius:99px;margin-bottom:16px}
+h2{font-size:clamp(1.9rem,4vw,2.8rem);margin-bottom:14px}
+.lead{color:var(--mute);max-width:640px;font-size:1.1rem}
+.center{text-align:center}.center .lead{margin:auto}
+.btn{display:inline-block;padding:15px 30px;border-radius:99px;font-weight:800;border:2px solid transparent;transition:.2s;cursor:pointer;font-size:1rem;font-family:inherit}
+.btn-p{background:var(--coral);color:#fff;box-shadow:0 10px 24px -8px rgba(239,123,99,.7)}
+.btn-p:hover{transform:translateY(-2px);background:#e5654b}
+.btn-o{border-color:var(--brand);color:var(--brand-d)}.btn-o:hover{background:var(--brand);color:#fff}
+/* header */
+header{position:sticky;top:0;z-index:50;background:rgba(255,250,243,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:74px}
+.logo{display:flex;align-items:center;gap:10px;font-family:Fraunces,serif;font-weight:700;font-size:1.35rem;color:var(--brand-d)}
+.logo i{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--sun));display:grid;place-items:center;font-style:normal;color:#fff;font-size:1.2rem}
+nav ul{display:flex;gap:26px;list-style:none;align-items:center}
+nav a{font-weight:700;font-size:.97rem}nav a:hover{color:var(--brand)}
+.burger{display:none;background:none;border:0;font-size:1.8rem;cursor:pointer}
+/* hero */
+.hero{padding:70px 0 90px;background:radial-gradient(900px 400px at 85% 0,#fde9c2 0,transparent 60%),radial-gradient(700px 400px at 0 100%,var(--sky) 0,transparent 60%)}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:50px;align-items:center}
+.hero h1{font-size:clamp(2.4rem,5.5vw,4rem);margin-bottom:20px}
+.hero h1 em{font-style:normal;color:var(--coral)}
+.hero p{font-size:1.15rem;color:var(--mute);margin-bottom:30px;max-width:520px}
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.trust{display:flex;gap:26px;margin-top:34px;flex-wrap:wrap;font-weight:700;font-size:.92rem;color:var(--mute)}
+.trust span:before{content:"✓ ";color:var(--brand)}
+.heroimg{position:relative}
+.heroimg .main{border-radius:200px 200px 28px 28px;aspect-ratio:4/5;object-fit:cover;width:100%;box-shadow:0 30px 60px -25px rgba(0,0,0,.35)}
+.badge{position:absolute;background:#fff;border-radius:18px;padding:12px 18px;box-shadow:0 14px 30px -10px rgba(0,0,0,.25);font-weight:800;font-size:.9rem;display:flex;gap:10px;align-items:center}
+.badge b{font-size:1.5rem;color:var(--coral);font-family:Fraunces,serif}
+.b1{left:-24px;bottom:60px}.b2{right:-10px;top:40px}
+/* photo fallback */
+.ph{background:linear-gradient(135deg,var(--brand),var(--sun));display:grid;place-items:center;color:#fff;font-size:3rem}
+/* stats */
+.stats{padding:0;margin-top:-40px;position:relative;z-index:2}
+.stats .grid{background:var(--brand-d);color:#fff;border-radius:var(--r);display:grid;grid-template-columns:repeat(4,1fr);padding:34px 20px;text-align:center;box-shadow:0 24px 50px -20px rgba(44,107,100,.6)}
+.stats strong{font-family:Fraunces,serif;font-size:2.4rem;display:block;color:var(--sun)}
+.stats span{font-size:.95rem;opacity:.9}
+/* about */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.collage{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.collage img,.collage .ph{border-radius:var(--r);width:100%;object-fit:cover;aspect-ratio:1}
+.collage > :nth-child(2){margin-top:40px}
+.checks{list-style:none;margin:22px 0 30px;display:grid;gap:12px}
+.checks li{padding-left:34px;position:relative;font-weight:600}
+.checks li:before{content:"✓";position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:var(--sky);color:var(--brand-d);display:grid;place-items:center;font-size:.85rem;font-weight:800}
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:30px;transition:.25s}
+.card:hover{transform:translateY(-6px);box-shadow:0 24px 40px -22px rgba(0,0,0,.25)}
+.ico{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:1.7rem;margin-bottom:18px}
+.card h3{font-size:1.3rem;margin-bottom:8px}.card p{color:var(--mute);font-size:.98rem}
+.c1 .ico{background:#fde9c2}.c2 .ico{background:#fbd9d1}.c3 .ico{background:var(--sky)}
+/* managed */
+.managed{background:var(--brand-d);color:#fff;position:relative;overflow:hidden}
+.managed h2,.managed h3{color:#fff}.managed .lead{color:#cfe6e2}
+.managed .eyebrow{background:rgba(255,255,255,.15);color:var(--sun)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:50px;counter-reset:s}
+.step{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);padding:28px;counter-increment:s}
+.step:before{content:counter(s);display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--sun);color:var(--ink);font-weight:800;font-family:Fraunces,serif;font-size:1.2rem;margin-bottom:16px}
+.step h3{font-size:1.15rem;margin-bottom:6px}.step p{font-size:.95rem;color:#cfe6e2}
+/* gallery */
+.gal{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:200px;gap:14px;margin-top:44px}
+.gal img,.gal .ph{width:100%;height:100%;object-fit:cover;border-radius:var(--r)}
+.gal>:nth-child(1){grid-column:span 2;grid-row:span 2}.gal>:nth-child(4){grid-column:span 2}
+/* pricing */
+.price{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;align-items:stretch}
+.plan{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:34px;display:flex;flex-direction:column;position:relative}
+.plan.hot{border:2px solid var(--coral);transform:translateY(-12px);box-shadow:0 30px 50px -28px rgba(239,123,99,.6)}
+.plan .tag{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--coral);color:#fff;font-size:.78rem;font-weight:800;padding:5px 16px;border-radius:99px;letter-spacing:.06em}
+.plan h3{font-size:1.4rem}.plan .p{font-family:Fraunces,serif;font-size:2.4rem;margin:12px 0 4px}.plan .p small{font-size:1rem;color:var(--mute);font-family:Nunito}
+.plan ul{list-style:none;margin:18px 0 26px;display:grid;gap:10px;flex:1;font-size:.97rem}
+.plan li:before{content:"✓ ";color:var(--brand);font-weight:800}
+.plan .btn{text-align:center}
+/* team */
+.team{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:48px}
+.person{text-align:center}
+.person img,.person .ph{width:100%;aspect-ratio:1;object-fit:cover;border-radius:50%;margin-bottom:14px;border:6px solid #fff;box-shadow:0 14px 30px -14px rgba(0,0,0,.35)}
+.person h3{font-size:1.15rem}.person span{color:var(--brand);font-weight:700;font-size:.9rem}
+/* testimonials */
+.tests{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.t{background:#fff;border-radius:var(--r);padding:30px;border:1px solid var(--line)}
+.t .st{color:var(--sun);letter-spacing:3px;margin-bottom:10px}
+.t p{font-size:.98rem;margin-bottom:16px}.t b{display:block}.t small{color:var(--mute)}
+/* faq */
+.faq{max-width:780px;margin:44px auto 0}
+details{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 24px;margin-bottom:12px}
+summary{font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::after{content:"+";color:var(--coral);font-size:1.5rem;line-height:1}
+details[open] summary::after{content:"–"}
+details p{color:var(--mute);margin-top:12px}
+/* contact */
+.contact{background:linear-gradient(135deg,var(--sky),#fde9c2)}
+.cbox{display:grid;grid-template-columns:1fr 1.1fr;gap:50px;align-items:start}
+.info{display:grid;gap:18px;margin-top:26px;font-weight:700}
+.info div{display:flex;gap:14px;align-items:center}.info i{font-style:normal;width:46px;height:46px;border-radius:14px;background:#fff;display:grid;place-items:center;font-size:1.3rem}
+form{background:#fff;border-radius:var(--r);padding:34px;box-shadow:0 30px 50px -30px rgba(0,0,0,.3);display:grid;gap:16px}
+label{font-weight:700;font-size:.9rem;display:grid;gap:6px}
+input,select,textarea{font:inherit;padding:13px 16px;border:1.5px solid var(--line);border-radius:14px;background:var(--bg);width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brand)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ok{display:none;color:var(--brand-d);font-weight:800;text-align:center}
+footer{background:#23222b;color:#bdbbc9;padding:56px 0 26px;font-size:.95rem}
+footer .g{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:40px}
+footer h4{color:#fff;margin-bottom:12px;font-family:Fraunces,serif}
+footer a{display:block;margin-bottom:6px}footer a:hover{color:var(--sun)}
+.copy{border-top:1px solid #3a3946;margin-top:36px;padding-top:20px;text-align:center;font-size:.85rem}
+.fade{opacity:0;transform:translateY(26px);transition:.7s}.fade.in{opacity:1;transform:none}
+@media(max-width:960px){
+ .hero .wrap,.two,.cbox{grid-template-columns:1fr}.cards,.price,.tests{grid-template-columns:1fr}
+ .steps,.team{grid-template-columns:1fr 1fr}.stats .grid{grid-template-columns:1fr 1fr;gap:24px}
+ .plan.hot{transform:none}.gal{grid-template-columns:1fr 1fr}.gal>:nth-child(1){grid-column:span 2}
+ .burger{display:block}nav ul{display:none;position:absolute;top:74px;left:0;right:0;background:var(--bg);flex-direction:column;padding:24px;border-bottom:1px solid var(--line)}nav ul.open{display:flex}
+ .b1{left:8px}.b2{right:8px}footer .g{grid-template-columns:1fr}section{padding:64px 0}
+}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+ <a href="#top" class="logo"><i>✦</i>Mała Przystań</a>
+ <button class="burger" aria-label="Menu" onclick="document.querySelector('nav ul').classList.toggle('open')">☰</button>
+ <nav><ul onclick="this.classList.remove('open')">
+  <li><a href="#o-nas">O nas</a></li><li><a href="#oferta">Oferta</a></li><li><a href="#jak">Jak działamy</a></li>
+  <li><a href="#cennik">Pakiety</a></li><li><a href="#zespol">Zespół</a></li><li><a href="#faq">FAQ</a></li>
+  <li><a href="#kontakt" class="btn btn-p" style="padding:10px 22px">Umów konsultację</a></li>
+ </ul></nav>
+</div></header>
+
+<main id="top">
+<section class="hero"><div class="wrap">
+ <div>
+  <span class="eyebrow">Centrum Wsparcia Edukacyjnego</span>
+  <h1>Każde dziecko zasługuje na <em>mądre wsparcie</em> w nauce</h1>
+  <p>Nauczyciele wspomagający, zajęcia indywidualne i terapia pedagogiczna – w pełni zorganizowane. Ty skupiasz się na dziecku, a my zajmujemy się resztą.</p>
+  <div class="cta"><a href="#kontakt" class="btn btn-p">Bezpłatna konsultacja</a><a href="#oferta" class="btn btn-o">Zobacz ofertę</a></div>
+  <div class="trust"><span>Wykwalifikowana kadra</span><span>Indywidualny plan</span><span>Stały kontakt z rodzicem</span></div>
+ </div>
+ <div class="heroimg">
+  <img class="main" alt="Dziecko uczące się z nauczycielem" src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=900&q=80">
+  <div class="badge b1"><b>98%</b>zadowolonych rodziców</div>
+  <div class="badge b2"><b>12+</b>lat doświadczenia</div>
+ </div>
+</div></section>
+
+<section class="stats"><div class="wrap"><div class="grid">
+ <div><strong>350+</strong><span>dzieci objętych wsparciem</span></div>
+ <div><strong>25</strong><span>współpracujących szkół</span></div>
+ <div><strong>18</strong><span>specjalistów w zespole</span></div>
+ <div><strong>5 000+</strong><span>godzin zajęć rocznie</span></div>
+</div></div></section>
+
+<section id="o-nas"><div class="wrap two">
+ <div class="collage fade">
+  <img alt="Zajęcia w małej grupie" src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=600&q=80">
+  <img alt="Nauka przez zabawę" src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=600&q=80">
+ </div>
+ <div class="fade">
+  <span class="eyebrow">O nas</span>
+  <h2>Pasja do pomagania, doświadczenie z klasy</h2>
+  <p class="lead">Założycielką Centrum jest nauczycielka wspomagająca z wieloletnią praktyką w szkołach. Wiemy, jak wygląda codzienność dziecka z potrzebami edukacyjnymi – i jak ją zmienić na lepsze.</p>
+  <ul class="checks">
+   <li>Dopasowujemy metody do tempa i możliwości dziecka</li>
+   <li>Współpracujemy z rodzicami, szkołą i poradnią</li>
+   <li>Pracujemy w oparciu o orzeczenia i opinie PPP</li>
+   <li>Stawiamy na relację, spokój i poczucie bezpieczeństwa</li>
+  </ul>
+  <a href="#kontakt" class="btn btn-p">Poznajmy się</a>
+ </div>
+</div></section>
+
+<section id="oferta" style="background:#fff"><div class="wrap">
+ <div class="center fade"><span class="eyebrow">Oferta</span><h2>Wsparcie, na które możesz liczyć</h2><p class="lead">Od jednej godziny w tygodniu po pełne zabezpieczenie nauczycielem wspomagającym na cały rok szkolny.</p></div>
+ <div class="cards">
+  <div class="card c1 fade"><div class="ico">🧑‍🏫</div><h3>Nauczyciel wspomagający</h3><p>Dobieramy i zapewniamy wykwalifikowanych nauczycieli wspomagających dla szkół i przedszkoli – wraz z dokumentacją i nadzorem.</p></div>
+  <div class="card c2 fade"><div class="ico">🧩</div><h3>Zajęcia indywidualne</h3><p>Praca 1:1 nad trudnościami w nauce, koncentracją, czytaniem, pisaniem i matematyką. Cele ustalamy z rodzicem.</p></div>
+  <div class="card c3 fade"><div class="ico">🌱</div><h3>Terapia pedagogiczna</h3><p>Zajęcia korekcyjno-kompensacyjne, wsparcie przy dysleksji, dysgrafii, dyskalkulii i ADHD.</p></div>
+  <div class="card c3 fade"><div class="ico">👥</div><h3>Małe grupy rozwojowe</h3><p>Trening umiejętności społecznych, emocji i współpracy w kameralnych, 4-osobowych grupach.</p></div>
+  <div class="card c1 fade"><div class="ico">📚</div><h3>Pomoc w adaptacji szkolnej</h3><p>Spokojny start w zerówce i pierwszej klasie, powroty po nieobecnościach, zmiana szkoły.</p></div>
+  <div class="card c2 fade"><div class="ico">🤝</div><h3>Konsultacje dla rodziców</h3><p>Wsparcie w rozumieniu orzeczeń, IPET, kontakcie ze szkołą i codziennej pracy w domu.</p></div>
+ </div>
+</div></section>
+
+<section id="jak" class="managed"><div class="wrap">
+ <div class="center fade"><span class="eyebrow">Pełna obsługa „pod klucz”</span><h2>Wszystkim zarządzamy za Ciebie</h2><p class="lead">Rekrutacja specjalistów, grafik, dokumentacja, raporty i kontakt ze szkołą – to nasza praca. Ty widzisz tylko efekty.</p></div>
+ <div class="steps">
+  <div class="step fade"><h3>Rozmowa i diagnoza</h3><p>Poznajemy dziecko, jego mocne strony i potrzeby. Konsultacja jest bezpłatna.</p></div>
+  <div class="step fade"><h3>Indywidualny plan</h3><p>Powstaje plan wsparcia z celami, harmonogramem i dobranym specjalistą.</p></div>
+  <div class="step fade"><h3>Realizacja</h3><p>Zajęcia w Centrum, w szkole lub online. Organizacją zajmujemy się my.</p></div>
+  <div class="step fade"><h3>Raporty i korekty</h3><p>Co miesiąc dostajesz przejrzysty raport postępów i wspólnie modyfikujemy plan.</p></div>
+ </div>
+</div></section>
+
+<section><div class="wrap">
+ <div class="center fade"><span class="eyebrow">Galeria</span><h2>Zajrzyj do naszej codzienności</h2><p class="lead">Kolorowe sale, uśmiechnięte dzieci i mnóstwo cierpliwości.</p></div>
+ <div class="gal fade">
+  <img alt="Sala zajęć" src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80">
+  <img alt="Książki" src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=500&q=80">
+  <img alt="Dzieci w trakcie zajęć" src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=500&q=80">
+  <img alt="Praca z nauczycielem" src="https://images.unsplash.com/photo-1596495577886-d920f1fb7238?auto=format&fit=crop&w=900&q=80">
+  <img alt="Zabawa edukacyjna" src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643?auto=format&fit=crop&w=500&q=80">
+  <img alt="Nauka" src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=500&q=80">
+ </div>
+</div></section>
+
+<section id="cennik" style="background:#fff"><div class="wrap">
+ <div class="center fade"><span class="eyebrow">Pakiety</span><h2>Przejrzyste zasady, bez niespodzianek</h2><p class="lead">Ceny przykładowe – dopasujemy pakiet do potrzeb dziecka.</p></div>
+ <div class="price">
+  <div class="plan fade"><h3>Start</h3><div class="p">120 zł<small> / godz.</small></div><p style="color:var(--mute)">Pojedyncze zajęcia indywidualne</p>
+   <ul><li>Konsultacja wstępna gratis</li><li>Zajęcia 1:1 (45 min)</li><li>Krótka notatka po zajęciach</li></ul><a href="#kontakt" class="btn btn-o">Wybieram</a></div>
+  <div class="plan hot fade"><span class="tag">NAJCZĘŚCIEJ WYBIERANY</span><h3>Pełne wsparcie</h3><div class="p">od 900 zł<small> / mies.</small></div><p style="color:var(--mute)">Pakiet w pełni zarządzany</p>
+   <ul><li>8 zajęć miesięcznie</li><li>Indywidualny plan wsparcia</li><li>Miesięczny raport postępów</li><li>Kontakt ze szkołą i poradnią</li><li>Konsultacje dla rodziców</li></ul><a href="#kontakt" class="btn btn-p">Wybieram</a></div>
+  <div class="plan fade"><h3>Dla szkół</h3><div class="p">wycena<small> indywidualna</small></div><p style="color:var(--mute)">Nauczyciele wspomagający na zlecenie</p>
+   <ul><li>Dobór i rekrutacja kadry</li><li>Zastępstwa i nadzór</li><li>Dokumentacja i rozliczenia</li><li>Szkolenia dla rad pedagogicznych</li></ul><a href="#kontakt" class="btn btn-o">Zapytaj o ofertę</a></div>
+ </div>
+</div></section>
+
+<section id="zespol"><div class="wrap">
+ <div class="center fade"><span class="eyebrow">Zespół</span><h2>Ludzie z sercem i kwalifikacjami</h2></div>
+ <div class="team">
+  <div class="person fade"><img alt="Założycielka" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80"><h3>Założycielka</h3><span>Nauczyciel wspomagający, pedagog</span></div>
+  <div class="person fade"><img alt="Terapeutka" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80"><h3>Terapeutka</h3><span>Terapia pedagogiczna</span></div>
+  <div class="person fade"><img alt="Psycholog" src="https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&w=400&q=80"><h3>Psycholog</h3><span>Wsparcie emocjonalne</span></div>
+  <div class="person fade"><img alt="Logopeda" src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=400&q=80"><h3>Logopeda</h3><span>Mowa i komunikacja</span></div>
+ </div>
+</div></section>
+
+<section style="background:#fff"><div class="wrap">
+ <div class="center fade"><span class="eyebrow">Opinie</span><h2>Rodzice o nas</h2></div>
+ <div class="tests">
+  <div class="t fade"><div class="st">★★★★★</div><p>„Syn wreszcie polubił szkołę. Plan wsparcia i miesięczne raporty dały nam spokój i poczucie, że ktoś naprawdę o niego dba.”</p><b>Marta K.</b><small>mama Jasia, 2 klasa</small></div>
+  <div class="t fade"><div class="st">★★★★★</div><p>„Wszystko zorganizowane od A do Z. Nie musiałam szukać specjalistów ani załatwiać papierów. Polecam z całego serca.”</p><b>Anna W.</b><small>mama Zosi, 1 klasa</small></div>
+  <div class="t fade"><div class="st">★★★★★</div><p>„Jako dyrektor szkoły cenię sobie rzetelność i profesjonalizm. Nauczyciele wspomagający są świetnie przygotowani.”</p><b>Piotr N.</b><small>dyrektor szkoły podstawowej</small></div>
+ </div>
+</div></section>
+
+<section id="faq"><div class="wrap">
+ <div class="center fade"><span class="eyebrow">FAQ</span><h2>Najczęstsze pytania</h2></div>
+ <div class="faq">
+  <details><summary>Czy potrzebuję orzeczenia, żeby zapisać dziecko?</summary><p>Nie. Pomagamy zarówno dzieciom z orzeczeniem, jak i tym, które potrzebują wsparcia w nauce bez formalnej diagnozy.</p></details>
+  <details><summary>Gdzie odbywają się zajęcia?</summary><p>W naszym Centrum, w szkole lub przedszkolu dziecka albo online – zależnie od potrzeb.</p></details>
+  <details><summary>Jak szybko możemy zacząć?</summary><p>Zwykle w ciągu 1–2 tygodni od konsultacji. Przy pilnych sprawach staramy się zorganizować wsparcie szybciej.</p></details>
+  <details><summary>Czy szkoły mogą z Wami współpracować?</summary><p>Tak. Zapewniamy nauczycieli wspomagających na zlecenie, wraz z dokumentacją i nadzorem merytorycznym.</p></details>
+ </div>
+</div></section>
+
+<section id="kontakt" class="contact"><div class="wrap cbox">
+ <div class="fade">
+  <span class="eyebrow">Kontakt</span>
+  <h2>Porozmawiajmy o Twoim dziecku</h2>
+  <p class="lead">Pierwsza konsultacja jest bezpłatna i do niczego nie zobowiązuje. Odpowiadamy w ciągu 24 godzin.</p>
+  <div class="info">
+   <div><i>📍</i>ul. Przykładowa 12, 00-001 Warszawa</div>
+   <div><i>📞</i>+48 500 000 000</div>
+   <div><i>✉️</i>kontakt@malaprzystan.pl</div>
+   <div><i>🕘</i>Pon–Pt 8:00–18:00</div>
+  </div>
+ </div>
+ <form id="f" class="fade">
+  <div class="row"><label>Imię i nazwisko<input required placeholder="Jan Kowalski"></label><label>Telefon<input type="tel" placeholder="500 000 000"></label></div>
+  <label>E-mail<input type="email" required placeholder="jan@example.com"></label>
+  <label>Interesuje mnie<select><option>Zajęcia indywidualne</option><option>Terapia pedagogiczna</option><option>Pełne wsparcie (pakiet)</option><option>Oferta dla szkoły</option></select></label>
+  <label>Wiadomość<textarea rows="4" placeholder="Opisz krótko sytuację dziecka..."></textarea></label>
+  <button class="btn btn-p" type="submit">Wyślij wiadomość</button>
+  <p class="ok" id="ok">Dziękujemy! Odezwiemy się wkrótce 💛</p>
+ </form>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+ <div class="g">
+  <div><div class="logo" style="color:#fff;margin-bottom:12px"><i>✦</i>Mała Przystań</div><p>Centrum Wsparcia Edukacyjnego. Pomagamy dzieciom uwierzyć w siebie i rozwijać skrzydła.</p></div>
+  <div><h4>Nawigacja</h4><a href="#o-nas">O nas</a><a href="#oferta">Oferta</a><a href="#cennik">Pakiety</a><a href="#faq">FAQ</a></div>
+  <div><h4>Kontakt</h4><a href="tel:+48500000000">+48 500 000 000</a><a href="mailto:kontakt@malaprzystan.pl">kontakt@malaprzystan.pl</a></div>
+ </div>
+ <div class="copy">© 2026 Mała Przystań. Wszelkie prawa zastrzeżone. · Polityka prywatności</div>
+</div></footer>
+
+<script>
+// zdjęcie się nie wczytało -> ładny kolorowy zastępnik
+document.querySelectorAll('img').forEach(i=>i.addEventListener('error',()=>{
+ const d=document.createElement('div');d.className='ph '+i.className;d.setAttribute('role','img');d.setAttribute('aria-label',i.alt);d.textContent='✦';
+ d.style.aspectRatio=getComputedStyle(i).aspectRatio;i.replaceWith(d)}));
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});
+document.querySelectorAll('.fade').forEach(e=>io.observe(e));
+document.getElementById('f').addEventListener('submit',e=>{e.preventDefault();document.getElementById('ok').style.display='block';e.target.reset()});
+</script>
+</body>
+</html>
